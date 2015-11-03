@@ -100,7 +100,7 @@ _.reject = function(collection, test) {
       //console.log(!test(item));
      return !test(item)
      }) ; 
-    console.log(newArray);
+    //console.log(newArray);
     return newArray;
 }
 
@@ -118,23 +118,24 @@ _.reject = function(collection, test) {
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
-    
-    var newArray = array;
+    var newArray = [];
     for (var i=0; i<array.length; i++){
-      for (var j=0; j<array.length; j++){
-        if(i != j){
-          if (array[i]===array[j]){
-            newArray.splice(j, 1);
-            //console.log("new array", newArray);
-            console.log("array", array);
-            
-          }
-
-        }
+      if (newArray[i]===undefined){
+        var prevElementFound = false;
+        for (var j=0; j<i; j++){
+          if (array[i]===array[j]) {
+            prevElementFound = true;
+            break;}
+          
+        } if (prevElementFound === false) {
+          newArray.push(array[i]);
+        }  
+      } //end of if newArray[i] body
+    } //end of for var i loop
+    
+    return newArray;
     }
-  }
-  return newArray;
-  };
+    
 
 
   // Return the results of applying an iterator to each element.
@@ -169,6 +170,7 @@ _.reject = function(collection, test) {
     });
   };
 
+
   // Reduces an array or object to a single value by repetitively calling
   // iterator(accumulator, item) for each item. accumulator should be
   // the return value of the previous iterator call.
@@ -190,6 +192,20 @@ _.reject = function(collection, test) {
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    var returnValue = 0;
+    _.each(collection, function (value){
+      if (accumulator != undefined) {
+        returnValue = returnValue + iterator(accumulator,value);
+      } else {
+        accumulator = returnValue;
+        returnValue = value;
+      };
+
+    } // end of the callback function for each
+
+    );// end of _.each call
+
+    return returnValue;
   };
 
   // Determine if the array or object contains a given value (using `===`).
