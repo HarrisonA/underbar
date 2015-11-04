@@ -191,6 +191,24 @@ _.reject = function(collection, test) {
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
+
+_.reduce = function(collection, iterator, accumulator){
+  _.each(collection, function (value){
+    if (accumulator != undefined){
+      accumulator = iterator(accumulator, value);
+    } else 
+      accumulator = value;   
+    
+  })  
+
+ return accumulator;
+};
+
+
+
+
+  /*****  Old Reduce
+
   _.reduce = function(collection, iterator, accumulator) {
     var returnValue = 0;
     _.each(collection, function (value){
@@ -206,18 +224,19 @@ _.reject = function(collection, test) {
     );// end of _.each call
 
     return returnValue;
-  };
+  };    *******/
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
     // TIP: Many iteration problems can be most easily expressed in
     // terms of reduce(). Here's a freebie to demonstrate!
+    
     return _.reduce(collection, function(wasFound, item) {
       if (wasFound) {
         return true;
       }
       return item === target;
-    }, false);
+    }, false);    
   };
 
 
