@@ -216,9 +216,8 @@ _.reduce = function(collection, iterator, accumulator){
     }, false);    
   };
 
-console.log("Im in underbar\n");
   // Determine whether all of the elements match a truth test.
-  _.every = function(collection, iterator, userValue) {
+  _.every = function(collection, iterator) {
     var allValuesAreTrue = false;
     var falseFound = false;
     
@@ -242,7 +241,6 @@ console.log("Im in underbar\n");
       var trueExist = true;
       _.each(collection, function(value){
         if (_.identity(value) === false) {
-          console.log ("Inside not iterator: found a false inside");
           trueExist = false;}
       });
 
@@ -268,6 +266,36 @@ console.log("Im in underbar\n");
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    
+    if (collection.length === 0) {  //check for empty array
+      console.log("Collection is empty:", collection);
+      return false;             // **WARNING** may not work for empty object
+
+    }    
+
+    if (iterator === undefined){   // STILL check each value when no 
+                                   // iterator given
+      var trueExist = false;
+      _.each(collection, function(value){
+        if (_.identity(value)) {
+          trueExist = true;}
+      });
+      return trueExist;
+    }
+
+
+    var oneTrueFound = false;
+    _.each(collection, function(val){
+      if(iterator(val) && !oneTrueFound){
+        oneTrueFound = true;
+        collection = [];
+        //console.log("Collection should be an empty array:", collection);
+        collection[0] = val;
+      }
+    });
+    
+
+    return _.every(collection, iterator);
   };
 
 
