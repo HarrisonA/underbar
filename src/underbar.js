@@ -408,6 +408,17 @@ _.reduce = function(collection, iterator, accumulator){
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+   var argsArray = [];
+   if (arguments.length >2){ 
+    for (var i=2; i<arguments.length; i++){
+      argsArray[i-2] = arguments[i];
+    }
+
+    setTimeout(function(){func.apply(this,argsArray)}, wait);
+   } else {
+    setTimeout(func, wait);
+   }
+
   };
 
 
@@ -422,6 +433,19 @@ _.reduce = function(collection, iterator, accumulator){
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var newArray = array.slice(0);
+
+    function shuffleArray(array) {  //from stackoverflow 
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+    }
+
+    return shuffleArray(newArray);
   };
 
 
