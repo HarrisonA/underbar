@@ -332,7 +332,6 @@ _.reduce = function(collection, iterator, accumulator){
   _.defaults = function(obj) {
     
    for (var i=1; i<arguments.length; i++){
-
     for (var key in arguments[i]){
       if (obj[key] === undefined) {
       obj[key] = arguments[i][key];
@@ -384,7 +383,23 @@ _.reduce = function(collection, iterator, accumulator){
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var resultsObject = {};
+    var myArgs = [];
+
+    return function() {
+          
+          for (var i=0; i<arguments.length; i++){
+            myArgs[i]=arguments[i];
+          }
+
+
+          if(resultsObject[myArgs]===undefined){
+            resultsObject[myArgs] = func.apply(this, arguments);
+          }        
+          return resultsObject[myArgs];
+        }
   };
+
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
