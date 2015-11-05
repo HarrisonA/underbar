@@ -97,10 +97,8 @@
 _.reject = function(collection, test) {
  var newArray =
     _.filter(collection, function(item, index){
-      //console.log(!test(item));
      return !test(item)
      }) ; 
-    //console.log(newArray);
     return newArray;
 }
 
@@ -197,34 +195,13 @@ _.reduce = function(collection, iterator, accumulator){
     if (accumulator != undefined){
       accumulator = iterator(accumulator, value);
     } else 
-      accumulator = value;   
-    
+      accumulator = value;     
   })  
 
  return accumulator;
 };
 
 
-
-
-  /*****  Old Reduce
-
-  _.reduce = function(collection, iterator, accumulator) {
-    var returnValue = 0;
-    _.each(collection, function (value){
-      if (accumulator != undefined) {
-        returnValue = returnValue + iterator(accumulator,value);
-      } else {
-        accumulator = returnValue;
-        returnValue = value;
-      };
-
-    } // end of the callback function for each
-
-    );// end of _.each call
-
-    return returnValue;
-  };    *******/
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
@@ -239,10 +216,52 @@ _.reduce = function(collection, iterator, accumulator){
     }, false);    
   };
 
-
+console.log("Im in underbar\n");
   // Determine whether all of the elements match a truth test.
-  _.every = function(collection, iterator) {
-    // TIP: Try re-using reduce() here.
+  _.every = function(collection, iterator, userValue) {
+    var allValuesAreTrue = false;
+    var falseFound = false;
+    
+    if (collection.length === 0) {  //check for empty array
+      return true;             // **WARNING** may not work for empty object
+    }                          
+
+    /********  FYI, code to check for an EMPTY object
+
+    function isEmpty(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            return false;
+    }
+
+    return true;
+    }  **************/
+    
+    if (iterator === undefined){   // STILL check each value when no 
+                                   // iterator given
+      var trueExist = true;
+      _.each(collection, function(value){
+        if (_.identity(value) === false) {
+          console.log ("Inside not iterator: found a false inside");
+          trueExist = false;}
+      });
+
+      return trueExist;
+    }
+    
+
+    return _.reduce(collection, function(allTrue, item) {
+      if(iterator(item) && !falseFound ){ 
+        allValuesAreTrue = true;
+        return true;
+      } else {
+        falseFound = true; 
+        allValuesAreTrue = false; 
+        return false;
+      }
+
+    }, false);   
+
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
