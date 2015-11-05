@@ -268,7 +268,6 @@ _.reduce = function(collection, iterator, accumulator){
     // TIP: There's a very clever way to re-use every() here.
     
     if (collection.length === 0) {  //check for empty array
-      console.log("Collection is empty:", collection);
       return false;             // **WARNING** may not work for empty object
 
     }    
@@ -289,7 +288,6 @@ _.reduce = function(collection, iterator, accumulator){
       if(iterator(val) && !oneTrueFound){
         oneTrueFound = true;
         collection = [];
-        //console.log("Collection should be an empty array:", collection);
         collection[0] = val;
       }
     });
@@ -318,11 +316,31 @@ _.reduce = function(collection, iterator, accumulator){
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    
+  for (var i=1; i<arguments.length; i++){
+
+    for (var key in arguments[i]){
+      obj[key] = arguments[i][key];
+    }
+  }
+    
+    return (obj);
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    
+   for (var i=1; i<arguments.length; i++){
+
+    for (var key in arguments[i]){
+      if (obj[key] === undefined) {
+      obj[key] = arguments[i][key];
+      } 
+    }
+   }
+    return (obj);
+
   };
 
 
